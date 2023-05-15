@@ -16,6 +16,8 @@ import javax.swing.JOptionPane;
  *
  * @author User
  */
+
+//este es el cambio de valqui
 public class GestionUsuario {
 
     //Conexion con1 = new Conexion();
