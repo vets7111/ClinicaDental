@@ -6,7 +6,7 @@ package Modelo1;
 
 import java.util.Date;
 
-
+/////esto es un comentario
 /**
  *
  * @author User
