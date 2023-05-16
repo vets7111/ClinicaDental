@@ -57,7 +57,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
         jbtn_guardar = new javax.swing.JButton();
         jbtn_cancelar = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
-        jbtn_modificar = new javax.swing.JButton();
         jbtn_salir = new javax.swing.JButton();
         jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
 
@@ -102,8 +101,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
 
         jLabel11.setText("Turno:");
 
-        jbtn_modificar.setText("Modificar");
-
         jbtn_salir.setText("salir");
         jbtn_salir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,22 +144,17 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
                             .addComponent(jtxt_apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jtxt_dnidentista, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jcbx_genero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 132, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel9)
                                     .addComponent(jLabel10)
                                     .addComponent(jLabel11)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 23, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jbtn_modificar)
-                                        .addGap(59, 59, 59)
-                                        .addComponent(jbtn_cancelar)))))
+                                    .addComponent(jbtn_cancelar))))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -238,8 +230,7 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbtn_guardar)
-                    .addComponent(jbtn_cancelar)
-                    .addComponent(jbtn_modificar))
+                    .addComponent(jbtn_cancelar))
                 .addGap(30, 30, 30))
         );
 
@@ -327,7 +318,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
     private javax.swing.JButton jbtn_cancelar;
     private javax.swing.JButton jbtn_guardar;
-    private javax.swing.JButton jbtn_modificar;
     private javax.swing.JButton jbtn_salir;
     private javax.swing.JComboBox<String> jcbx_genero;
     private javax.swing.JTextField jtxt_apellidos;
