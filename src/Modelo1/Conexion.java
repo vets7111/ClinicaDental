@@ -14,8 +14,8 @@ public class Conexion {
      public static Connection getConexion(){
     String url= "jdbc:sqlserver://localhost:1433;"
                 +"database=BD_CLINICADENTAL;"
-                +"user=AntonySQL;"
-                +"password=root;";
+                +"user=sa;"
+                +"password=jackalex;";
     try{
         Connection con=DriverManager.getConnection(url);
        
