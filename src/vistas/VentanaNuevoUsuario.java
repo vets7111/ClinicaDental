@@ -13,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import controlador.PrincipalController;
-
+import java.sql.ResultSet;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 /**
@@ -26,17 +28,28 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
      * Creates new form RegistrarUsuario
      */
     public VentanaNuevoUsuario() {
-        
+
         initComponents();
         ArrayList<Perfil> perfilcaga = GestionUsuario.MostrarPerfil();
         for (Perfil p : perfilcaga) {
-            
+
             jcbx_perfil.addItem(p.getId_perfil() + " " + p.getNombre_perfil());
         }
-        
+        jLabel13.setEnabled(false);
     }
-    // NuevoUsuarioController regusu = new NuevoUsuarioController();
 
+    public void HabilitarButton() {
+        if (!jtxt_nombreUsuario.getText().isEmpty() && !jtxt_apellidoUsuario.getText().isEmpty()
+                && !jtxt_correoUsuario.getText().isEmpty() && !jtxt_Usuario.getText().isEmpty()
+                && !jtxt_contrasena.getText().isEmpty() && !jtxt_dniUsuario.getText().isEmpty()
+                && !jtxt_telefonoUsuario.getText().isEmpty() && !jtxt_dniUsuario.getText().isEmpty()) {
+            jLabel13.setEnabled(true);
+        } else {
+            jLabel13.setEnabled(false);
+        }
+    }
+
+    // NuevoUsuarioController regusu = new NuevoUsuarioController();
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -84,20 +97,62 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
 
         jLabel1.setText("Nombre:");
 
+        jtxt_nombreUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_nombreUsuarioKeyTyped(evt);
+            }
+        });
+
         jLabel4.setText("Apellido: ");
+
+        jtxt_apellidoUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_apellidoUsuarioKeyTyped(evt);
+            }
+        });
 
         jLabel8.setText("Telefono:");
 
+        jtxt_telefonoUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_telefonoUsuarioKeyTyped(evt);
+            }
+        });
+
         jLabel9.setText("Correo:");
 
+        jtxt_correoUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_correoUsuarioKeyTyped(evt);
+            }
+        });
+
         jLabel15.setText("DNI:");
+
+        jtxt_dniUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_dniUsuarioKeyTyped(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("Cuenta ");
 
         jLabel6.setText("Usuario:");
 
+        jtxt_Usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_UsuarioKeyTyped(evt);
+            }
+        });
+
         jLabel7.setText("Contraseña:");
+
+        jtxt_contrasena.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxt_contrasenaKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -135,11 +190,9 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
                                 .addComponent(jtxt_Usuario))
                             .addComponent(jLabel10)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(80, 80, 80)
-                                .addComponent(jtxt_contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(251, 251, 251)))
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtxt_contrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -308,6 +361,19 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         NuevoUsuarioController.botonMinimizar();
     }//GEN-LAST:event_jLabel12MouseClicked
+    private static String encriptarContraseña(String contraseña) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(contraseña.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        }
+    }
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         // TODO add your handling code here:
@@ -317,25 +383,28 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         String correo = jtxt_correoUsuario.getText();
         String usuario = jtxt_Usuario.getText();
         String contrasena = jtxt_contrasena.getText();
+        String contraseñaEncriptada = encriptarContraseña(contrasena);
         int dni_usuario = Integer.parseInt(jtxt_dniUsuario.getText());
         int telefono = Integer.parseInt(jtxt_telefonoUsuario.getText());
-        int perfil = 0;
-        String nomperfil = "";
-//        if(jrbtn_admin.isSelected()){perfil=1;}
-//        if(jrbtn_superadmin.isSelected()){perfil=2;}
+        ResultSet rs;
+        int perf = 0;
+        if (jcbx_perfil.getSelectedIndex() != 0 || jcbx_perfil.getSelectedItem() != null) {
+            perf = Integer.parseInt(String.valueOf(jcbx_perfil.getSelectedItem()).trim().split(" ")[0]);
 
+        }
+        //System.out.println("esa ".);
         try {
             Connection con = Conexion.getConexion();
 
             PreparedStatement ps = con.prepareStatement("INSERT INTO USUARIOS(usuario,contrasena,dni_usuario,correo,nombre,apellido,telefono, id_perfil) VALUES (?,?,?,?,?,?,?,?)");
             ps.setString(1, usuario);
-            ps.setString(2, contrasena);
+            ps.setString(2, contraseñaEncriptada);
             ps.setInt(3, dni_usuario);
             ps.setString(4, correo);
             ps.setString(5, nombre);
             ps.setString(6, apellido);
             ps.setInt(7, telefono);
-            ps.setInt(8, perfil);
+            ps.setInt(8, perf);
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "REGISTRO GUARDADO...");
             limpiarRegistroUsuario();
@@ -386,54 +455,50 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jcbx_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbx_perfilActionPerformed
-        
-        if(jcbx_perfil.getSelectedIndex()==0){
-        System.out.print("No se va");
+
+        if (jcbx_perfil.getSelectedIndex() == 0) {
+            JOptionPane.showMessageDialog(null, "Sebe seleccionar un Perfil.");
         }
-        else{ System.out.print(jcbx_perfil.getSelectedItem());
-        }
+
     }//GEN-LAST:event_jcbx_perfilActionPerformed
-    public void CargarPermisos() {
 
-    }
+    private void jtxt_nombreUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_nombreUsuarioKeyTyped
+        HabilitarButton();
+    }//GEN-LAST:event_jtxt_nombreUsuarioKeyTyped
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(VentanaNuevoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(VentanaNuevoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(VentanaNuevoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(VentanaNuevoUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new VentanaNuevoUsuario().setVisible(true);
-//            }
-//        });
-//    }
+    private void jtxt_apellidoUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_apellidoUsuarioKeyTyped
+        HabilitarButton();
+    }//GEN-LAST:event_jtxt_apellidoUsuarioKeyTyped
+
+    private void jtxt_telefonoUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_telefonoUsuarioKeyTyped
+        HabilitarButton();
+        char c = evt.getKeyChar();
+        if (c < '0' || c > '9') {
+            evt.consume();
+        }
+
+    }//GEN-LAST:event_jtxt_telefonoUsuarioKeyTyped
+
+    private void jtxt_correoUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_correoUsuarioKeyTyped
+        HabilitarButton();
+    }//GEN-LAST:event_jtxt_correoUsuarioKeyTyped
+
+    private void jtxt_dniUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_dniUsuarioKeyTyped
+        HabilitarButton();
+        char c = evt.getKeyChar();
+        if (c < '0' || c > '9')
+            evt.consume();
+    }//GEN-LAST:event_jtxt_dniUsuarioKeyTyped
+
+    private void jtxt_UsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_UsuarioKeyTyped
+        HabilitarButton();
+
+    }//GEN-LAST:event_jtxt_UsuarioKeyTyped
+
+    private void jtxt_contrasenaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_contrasenaKeyTyped
+        HabilitarButton();
+    }//GEN-LAST:event_jtxt_contrasenaKeyTyped
+
     private void limpiarRegistroUsuario() {
         jtxt_Usuario.setText("");
         jtxt_nombreUsuario.setText("");
@@ -442,7 +507,7 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         jtxt_contrasena.setText("");
         jtxt_dniUsuario.setText("");
         jtxt_telefonoUsuario.setText("");
-        //jChbx_SuperAdmi.setSelected(true);
+
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
@@ -472,4 +537,5 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField jtxt_nombreUsuario;
     private javax.swing.JTextField jtxt_telefonoUsuario;
     // End of variables declaration//GEN-END:variables
+
 }

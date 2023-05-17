@@ -12,10 +12,10 @@ import java.sql.SQLException;
  */
 public class Conexion {
      public static Connection getConexion(){
-    String url= "jdbc:sqlserver://localhost:1433;"
+      String url= "jdbc:sqlserver://DESKTOP-JE6546L:1433;"
                 +"database=BD_CLINICADENTAL;"
                 +"user=sa;"
-                +"password=jackalex;";
+                +"password=esau;";
     try{
         Connection con=DriverManager.getConnection(url);
        
