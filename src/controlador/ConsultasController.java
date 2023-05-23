@@ -9,7 +9,7 @@ import vistas.VentanaConsultas;
 /**
  *
  * @author User
- */
+ *////antony comentario
 public class ConsultasController {
     public static VentanaConsultas ventana= new VentanaConsultas();
     public static void Mostrar(){
