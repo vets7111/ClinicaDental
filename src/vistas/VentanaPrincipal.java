@@ -156,7 +156,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(71, Short.MAX_VALUE)
+                .addContainerGap(83, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -271,7 +271,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/consulta (1).png"))); // NOI18N
-        jMenu2.setText("CONSULTA");
+        jMenu2.setText("CITA");
         jMenu2.setFont(new java.awt.Font("Roboto Medium", 0, 12)); // NOI18N
         jMenu2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -395,6 +395,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jMenuItem_usuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_usuariosActionPerformed
         // TODO add your handling code here:
        PrincipalController.botonUsuario();
+       
     }//GEN-LAST:event_jMenuItem_usuariosActionPerformed
 
     private void jMenuItem_OdontologosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_OdontologosActionPerformed
