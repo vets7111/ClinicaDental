@@ -20,4 +20,5 @@ public class OdontologoController {
     public static void Ocultar(){
         ventana.setVisible(false);
     }
+    
 }

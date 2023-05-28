@@ -4,6 +4,8 @@
  */
 package controlador; 
 
+import Modelo.Conexion;
+
 
 
 
@@ -21,7 +23,8 @@ public class Principal {
         // TODO code application logic here
         //PrincipalController.Mostrar();
         LoginController.Mostrar();
-        Modelo1.Conexion.getConexion();
+//        Conexion conexion = new Conexion();
+        Modelo.Conexion.getConexion();
         
 
         

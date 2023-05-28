@@ -6,7 +6,7 @@ package controlador;
 
 import javax.swing.JOptionPane;
 import vistas.VentanaLogin;
-import Modelo1.Conexion;
+import Modelo.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

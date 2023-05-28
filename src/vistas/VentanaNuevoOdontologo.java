@@ -63,7 +63,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
         jbtn_salir = new javax.swing.JButton();
         campofech = new org.jdesktop.swingx.JXDatePicker();
         comboturno = new javax.swing.JComboBox<>();
-        fechachoose = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -184,10 +183,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
                             .addComponent(comboturno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(campofech, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(120, 120, 120))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(fechachoose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(159, 159, 159))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -231,9 +226,7 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(campocelular, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(fechachoose, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(campocorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -284,7 +277,7 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
             guardarOdontologo.setString(9,campodirec.getText() );
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //            String date = sdf.format(txtfechanacimiento.getDate());
-            guardarOdontologo.setString(10, sdf.format(fechachoose.getDate()));
+            guardarOdontologo.setString(10, sdf.format(campofech.getDate()));
             guardarOdontologo.setString(11,campociudad.getText() );
             guardarOdontologo.executeUpdate();
             JOptionPane.showMessageDialog(null, "Datos guardados");
@@ -406,7 +399,6 @@ public class VentanaNuevoOdontologo extends javax.swing.JFrame {
     private javax.swing.JTextField campoprov;
     private javax.swing.JComboBox<String> combogen;
     private javax.swing.JComboBox<String> comboturno;
-    private com.toedter.calendar.JDateChooser fechachoose;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

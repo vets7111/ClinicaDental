@@ -19,4 +19,5 @@ public class UsuarioController {
     public static void Ocultar(){
         ventana.setVisible(false);
     }
+    
 }
