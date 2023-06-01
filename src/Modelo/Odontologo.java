@@ -4,7 +4,13 @@
  */
 package Modelo;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 
 /**
@@ -23,6 +29,12 @@ public class Odontologo {
     private String direccion;
     private LocalDate fecha_nacimient;
     private String ciudad;
+
+    public Odontologo(int dni_odontologo, String nombre, String apellido) {
+        this.dni_odontologo = dni_odontologo;
+        this.nombre = nombre;
+        this.apellido = apellido;
+    }
 
     @Override
     public String toString() {

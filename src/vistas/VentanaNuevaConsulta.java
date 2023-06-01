@@ -4,9 +4,35 @@
  */
 package vistas;
 
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import Modelo.Conexion;
+import Modelo.GestionUsuario;
+import Modelo.Odontologo;
+import Modelo.Paciente;
+import Modelo.Perfil;
+import com.formdev.flatlaf.ui.FlatTableCellBorder;
 import controlador.ConsultasController;
 import controlador.NuevaConsultaController;
 import controlador.PrincipalController;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import java.sql.ResultSet;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
+import javax.print.attribute.standard.DateTimeAtCompleted;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
+import java.time.LocalDate;
 
 /**
  *
@@ -14,11 +40,24 @@ import controlador.PrincipalController;
  */
 public class VentanaNuevaConsulta extends javax.swing.JFrame {
 
+    DefaultListModel model = new DefaultListModel();
+
     /**
      * Creates new form VistaNuevaConsulta
      */
     public VentanaNuevaConsulta() {
         initComponents();
+        ArrayList<Odontologo> odontocarga = GestionUsuario.MostrarOdontologo();
+        for (Odontologo p : odontocarga) {
+
+            jcbx_dentista.addItem(p.getDni_odontologo() + " " + p.getNombre() + " " + p.getApellido());
+        }
+//
+//        ArrayList<Paciente> paciencarga = GestionUsuario.MostrarPaciente();
+//        for (Paciente p : paciencarga) {
+//
+//            jcbx_paciente.addItem(p.getDni_paciente() + " " + p.getNombre() + " " + p.getApellido());
+//        }
     }
 
     /**
@@ -30,12 +69,68 @@ public class VentanaNuevaConsulta extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jtxt_motivo = new javax.swing.JTextField();
+        jcbx_dentista = new javax.swing.JComboBox<>();
+        jtxt_paciente = new javax.swing.JTextField();
+        jbtn_guardarcita = new javax.swing.JButton();
+        jbtn_eliminarcita = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList1 = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Crear Cita");
 
-        jButton1.setText("Guardar");
+        jLabel1.setText("Motivo: ");
+
+        jLabel2.setText("Odontologo: ");
+
+        jLabel3.setText("Paciente:");
+
+        jtxt_motivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxt_motivoActionPerformed(evt);
+            }
+        });
+
+        jcbx_dentista.setEditable(true);
+        jcbx_dentista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbx_dentistaActionPerformed(evt);
+            }
+        });
+        jcbx_dentista.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jcbx_dentistaKeyReleased(evt);
+            }
+        });
+
+        jtxt_paciente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxt_pacienteActionPerformed(evt);
+            }
+        });
+        jtxt_paciente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtxt_pacienteKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jtxt_pacienteKeyReleased(evt);
+            }
+        });
+
+        jbtn_guardarcita.setText("Guardar");
+        jbtn_guardarcita.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtn_guardarcitaActionPerformed(evt);
+            }
+        });
+
+        jbtn_eliminarcita.setText("Eliminar");
 
         jButton2.setText("Volver");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -44,25 +139,81 @@ public class VentanaNuevaConsulta extends javax.swing.JFrame {
             }
         });
 
+        jList1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jList1MouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jList1);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jcbx_dentista, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxt_motivo, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                                .addComponent(jtxt_paciente, javax.swing.GroupLayout.Alignment.LEADING))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jbtn_guardarcita)
+                        .addGap(27, 27, 27)
+                        .addComponent(jbtn_eliminarcita)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2)))
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jtxt_motivo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jcbx_dentista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(jtxt_paciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtn_guardarcita)
+                    .addComponent(jbtn_eliminarcita)
+                    .addComponent(jButton2))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 514, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(41, 41, 41))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(252, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
-                .addGap(25, 25, 25))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -71,9 +222,139 @@ public class VentanaNuevaConsulta extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         ConsultasController.Mostrar();
-        NuevaConsultaController.Ocultar();
-        
+        //NuevaConsultaController.Ocultar();
+
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jbtn_guardarcitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtn_guardarcitaActionPerformed
+        // TODO add your handling code here:
+        int dni_paciente = Integer.parseInt(jtxt_paciente.getText().trim().split(" ")[0]);
+        String motivo = jtxt_motivo.getText().trim().substring(jtxt_motivo.getText().lastIndexOf(" ")+1);
+        int dni_odontologo = 0;
+        //jcbx_paciente.setEnabled(true);
+        if (jcbx_dentista.getSelectedIndex() != 0 || jcbx_dentista.getSelectedItem() != null) {
+            dni_odontologo = Integer.parseInt(String.valueOf(jcbx_dentista.getSelectedItem()).trim().split(" ")[0]);}
+            LocalDateTime fechahorallegada = LocalDateTime.now();
+            fechahorallegada = LocalDateTime.now().truncatedTo(java.time.temporal.ChronoUnit.SECONDS);
+            int nro_historiaclinica = Integer.parseInt(jtxt_paciente.getText().trim().substring(jtxt_paciente.getText().lastIndexOf(" ")+1));
+            Connection con = Conexion.getConexion();
+            
+            int nro_turno=1;
+            //if(fechahorallegada)
+            System.out.println(nro_historiaclinica);
+//            try {
+//                String sql = "SELECT nro_historiaclinica FROM PACIENTES WHERE dni_paciente = ?";
+//                PreparedStatement ps1 = con.prepareStatement(sql);
+//                ps1.setInt(1, dni_paciente);
+//                //ps1.executeQuery();
+//                ResultSet rs1 = ps1.executeQuery();
+//                if (rs1.next()) {
+//                    nro_historiaclinica = rs1.getInt("nro_historiaclinica");
+//                    // Usa valorColumna como desees
+//                }
+//                
+//                
+//
+//            
+//            } catch (SQLException e) {
+//                JOptionPane.showMessageDialog(null, e.toString());
+//            }
+            
+                               String estado="P";
+            try {
+                PreparedStatement ps = con.prepareStatement("INSERT INTO CITAS(id_odontologo,estado,motivo,dni_paciente,nro_historiaclinica) VALUES (?,?,?,?,?)");
+                //ps.setInt(1, );
+                ps.setInt(1,dni_odontologo );
+                ps.setString(2, estado);
+                //ps.setObject(5, fechahorallegada);
+                ps.setString(3, motivo);
+                ps.setInt(4, dni_paciente);
+                ps.setInt(5,nro_historiaclinica );
+                
+                
+                ps.executeUpdate();
+                JOptionPane.showMessageDialog(null, "CITA GUARDADO...");
+                limpiarRegistroCita();
+                nro_turno=nro_turno+1;
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.toString());
+            
+         
+        }
+      
+
+    }//GEN-LAST:event_jbtn_guardarcitaActionPerformed
+
+    private void jtxt_pacienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_pacienteActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jtxt_pacienteActionPerformed
+
+    private void jcbx_dentistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbx_dentistaActionPerformed
+
+    }//GEN-LAST:event_jcbx_dentistaActionPerformed
+
+    private void jtxt_motivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxt_motivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxt_motivoActionPerformed
+
+    private void jtxt_pacienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_pacienteKeyReleased
+        // TODO add your handling code here:
+        Connection con = Conexion.getConexion();
+        if (this.jtxt_paciente.getText().isEmpty()) {
+            model.clear();
+        } else {
+            try {
+                int conc = Integer.parseInt(jtxt_paciente.getText());
+                PreparedStatement ps = con.prepareStatement("SELECT dni_paciente, nro_historiaclinica FROM  PACIENTES WHERE dni_paciente like '" + conc + "%'");
+                ResultSet rs = ps.executeQuery();
+                model.clear();
+                while (rs.next()) {
+                    model.addElement(rs.getObject(1)+" "+rs.getObject(2));
+                }
+                this.jList1.setModel(model);
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(null, e.toString());
+
+            }
+        }
+
+    }//GEN-LAST:event_jtxt_pacienteKeyReleased
+
+    private void jcbx_dentistaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jcbx_dentistaKeyReleased
+        // TODO add your handling code here:
+//          Connection con = Conexion.getConexion();
+//        if (this.jcbx_dentista.getSelectedItem().equals("")) {
+//            model.clear();
+//        } else {
+//            try {
+//                int conc = Integer.parseInt(jtxt_paciente.getText());
+//                PreparedStatement ps = con.prepareStatement("SELECT dni_paciente FROM  PACIENTES WHERE dni_paciente="+conc);
+//                ResultSet rs = ps.executeQuery();
+//                model.clear();
+//                while(rs.next()){
+//                    model.addElement(rs.getObject(1));
+//                }
+//                this.jList1.setModel(model);
+//            } catch (SQLException e) {
+//                JOptionPane.showMessageDialog(null, e.toString());
+//                
+//            }
+//        }
+
+
+    }//GEN-LAST:event_jcbx_dentistaKeyReleased
+
+    private void jtxt_pacienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxt_pacienteKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxt_pacienteKeyPressed
+
+    private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
+        // TODO add your handling code here:
+       if(jList1.getSelectedIndices()!=null){
+       jtxt_paciente.setText(jList1.getSelectedValue().toString());
+       }
+    }//GEN-LAST:event_jList1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -110,9 +391,39 @@ public class VentanaNuevaConsulta extends javax.swing.JFrame {
             }
         });
     }
+//    private void filtrarDatos() {
+//    String filtro = jtxt_paciente.getText().trim();
+//    DefaultTableModel modelo = (DefaultTableModel) TablaPacientes.getModel();
+//    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+//    TablaPacientes.setRowSorter(sorter);
+//    
+//    if (filtro.length() == 0) {
+//        sorter.setRowFilter(null);
+//    } else {
+//        RowFilter<DefaultTableModel, Object> rowFilter = RowFilter.regexFilter(filtro, 0);
+//        sorter.setRowFilter(rowFilter);
+//    }
+//    }
+      private void limpiarRegistroCita() {
+        jtxt_motivo.setText("");
+        jtxt_paciente.setText("");
+        jtxt_motivo.setText("");
+        
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JList<String> jList1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton jbtn_eliminarcita;
+    private javax.swing.JButton jbtn_guardarcita;
+    private javax.swing.JComboBox<String> jcbx_dentista;
+    private javax.swing.JTextField jtxt_motivo;
+    private javax.swing.JTextField jtxt_paciente;
     // End of variables declaration//GEN-END:variables
 }
