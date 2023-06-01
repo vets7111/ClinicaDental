@@ -10,12 +10,15 @@ import controlador.PrincipalController;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 
 
 public class VentanaOdontologos extends javax.swing.JFrame {
 
     Connection con = Conexion.getConexion();
+    
     public VentanaOdontologos() {
         
         initComponents();
@@ -34,7 +37,7 @@ public class VentanaOdontologos extends javax.swing.JFrame {
         todont.addColumn("Direccion");
         todont.addColumn("Fecha_nacimiento");
         todont.addColumn("Ciudad");
-        
+ 
         tablaOdont.setModel(todont);
         String codsql;
         if(opBuscar == 0 && valor==null){
@@ -97,19 +100,36 @@ public class VentanaOdontologos extends javax.swing.JFrame {
          String ciudad =tablaOdont.getValueAt(fila, 10).toString();
          
          try {
-            PreparedStatement actu=con.prepareStatement("UPDATE ODONTOLOGOS SET nombre='"+nombre+"',apellido='"+apellido+"',telefono='"+telefono+"',correo='"+correo+"',turno='"+turno+"',genero='"+genero+"',provincia='"+provincia+"',direccion='"+direccion+"',fecha_nacimiento='"+fecha_nacimiento+"',ciudad='"+ciudad+"' WHERE dni_odontologo='"+dni+"'");
-            actu.executeUpdate();
-             mostrarDatosOdontologo(0, null);
+             if(JOptionPane.showConfirmDialog(null, "Se Actualizara el registro, ¿desea continuar?") == JOptionPane.YES_OPTION){
+                    
+                PreparedStatement actu=con.prepareStatement("UPDATE ODONTOLOGOS SET nombre='"+nombre+"',apellido='"+apellido+"',telefono='"+telefono+"',correo='"+correo+"',turno='"+turno+"',genero='"+genero+"',provincia='"+provincia+"',direccion='"+direccion+"',fecha_nacimiento='"+fecha_nacimiento+"',ciudad='"+ciudad+"' WHERE dni_odontologo='"+dni+"'");
+                actu.executeUpdate();
+                mostrarDatosOdontologo(0, null);
+             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e + "No se logro actualizar");
         }
+        }
+    public void eliminarOdontologo(){
+            int fila = tablaOdont.getSelectedRow();
+            String valor =tablaOdont.getValueAt(fila, 0).toString();
+            try {
+                if(JOptionPane.showConfirmDialog(null, "Se eliminará el registro, ¿desea continuar?") == JOptionPane.YES_OPTION){
+                    PreparedStatement elim=con.prepareStatement("delete from ODONTOLOGOS where dni_odontologo='"+valor+"'");
+                    elim.executeUpdate();
+                    mostrarDatosOdontologo(0,null);
+                }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e + "No se elimino nada");
+        }
+            
         }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaOdont = new javax.swing.JTable();
         jButton4 = new javax.swing.JButton();
@@ -128,7 +148,12 @@ public class VentanaOdontologos extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setText("Eliminar");
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
 
         tablaOdont.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -140,7 +165,7 @@ public class VentanaOdontologos extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tablaOdont);
 
-        jButton4.setText("Salir");
+        jButton4.setText("Volver");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -152,6 +177,11 @@ public class VentanaOdontologos extends javax.swing.JFrame {
         campoBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 campoBuscarActionPerformed(evt);
+            }
+        });
+        campoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoBuscarKeyReleased(evt);
             }
         });
 
@@ -175,7 +205,7 @@ public class VentanaOdontologos extends javax.swing.JFrame {
                 .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(btnBuscar)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(505, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,21 +229,21 @@ public class VentanaOdontologos extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 772, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1047, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(94, 94, 94)
-                        .addComponent(jButton1)
-                        .addGap(140, 140, 140)
-                        .addComponent(jButton3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(btnActualizar)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(166, 166, 166)
+                .addComponent(jButton1)
+                .addGap(140, 140, 140)
+                .addComponent(btnEliminar)
+                .addGap(127, 127, 127)
+                .addComponent(btnActualizar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton4)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,15 +257,12 @@ public class VentanaOdontologos extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnEliminar)
+                                .addComponent(btnActualizar)))))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(btnActualizar)
-                        .addGap(34, 34, 34)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
@@ -270,6 +297,18 @@ public class VentanaOdontologos extends javax.swing.JFrame {
         // TODO add your handling code here:
         actualizarDatos();
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        eliminarOdontologo();
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void campoBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoBuscarKeyReleased
+//        DefaultTableModel todont=new DefaultTableModel();
+//        TableRowSorter<DefaultTableModel> Sorter;
+//        Sorter = new TableRowSorter<>(todont);
+//        tablaOdont.setRowSorter(Sorter);
+//        Sorter.setRowFilter(RowFilter.regexFilter(campoBuscar.getText(),comboOpcion.getSelectedIndex()));
+    }//GEN-LAST:event_campoBuscarKeyReleased
 
     /**
      * @param args the command line arguments
@@ -309,10 +348,10 @@ public class VentanaOdontologos extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnEliminar;
     private javax.swing.JTextField campoBuscar;
     private javax.swing.JComboBox<String> comboOpcion;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
