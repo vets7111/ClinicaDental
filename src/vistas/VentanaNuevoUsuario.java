@@ -35,7 +35,7 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
 
             jcbx_perfil.addItem(p.getId_perfil() + " " + p.getNombre_perfil());
         }
-        jLabel13.setEnabled(false);
+        Guardar.setEnabled(false);
     }
 
     public void HabilitarButton() {
@@ -43,9 +43,9 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
                 && !jtxt_correoUsuario.getText().isEmpty() && !jtxt_Usuario.getText().isEmpty()
                 && !jtxt_contrasena.getText().isEmpty() && !jtxt_dniUsuario.getText().isEmpty()
                 && !jtxt_telefonoUsuario.getText().isEmpty() && !jtxt_dniUsuario.getText().isEmpty()) {
-            jLabel13.setEnabled(true);
+            Guardar.setEnabled(true);
         } else {
-            jLabel13.setEnabled(false);
+            Guardar.setEnabled(false);
         }
     }
 
@@ -79,13 +79,11 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jcbx_perfil = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        Guardar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Registrar Usuario"));
 
@@ -247,15 +245,6 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
                 .addContainerGap(87, Short.MAX_VALUE))
         );
 
-        jLabel13.setText("Guardar");
-        jLabel13.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jLabel13.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jLabel13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel13MouseClicked(evt);
-            }
-        });
-
         jButton1.setText("Cerrar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,17 +252,17 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Atras");
+        jButton2.setText("Volver");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Minimizar");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                GuardarActionPerformed(evt);
             }
         });
 
@@ -285,32 +274,25 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton3))
+                        .addComponent(jButton2))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(177, 177, 177)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(177, 177, 177)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton1))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(Guardar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 13, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                .addComponent(jButton2)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -318,7 +300,7 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jLabel13))
+                    .addComponent(Guardar))
                 .addGap(14, 14, 14))
         );
 
@@ -337,46 +319,6 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
             return null;
         }
     }
-
-    private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
-        // TODO add your handling code here:
-
-        String nombre = jtxt_nombreUsuario.getText();
-        String apellido = jtxt_apellidoUsuario.getText();
-        String correo = jtxt_correoUsuario.getText();
-        String usuario = jtxt_Usuario.getText();
-        String contrasena = jtxt_contrasena.getText();
-        String contraseñaEncriptada = encriptarContraseña(contrasena);
-        int dni_usuario = Integer.parseInt(jtxt_dniUsuario.getText());
-        int telefono = Integer.parseInt(jtxt_telefonoUsuario.getText());
-        ResultSet rs;
-        int perf = 0;
-        if (jcbx_perfil.getSelectedIndex() != 0 || jcbx_perfil.getSelectedItem() != null) {
-            perf = Integer.parseInt(String.valueOf(jcbx_perfil.getSelectedItem()).trim().split(" ")[0]);
-
-        }
-        //System.out.println("esa ".);
-        try {
-            Connection con = Conexion.getConexion();
-
-            PreparedStatement ps = con.prepareStatement("INSERT INTO USUARIOS(usuario,contrasena,dni_usuario,correo,nombre,apellido,telefono, id_perfil) VALUES (?,?,?,?,?,?,?,?)");
-            ps.setString(1, usuario);
-            ps.setString(2, contraseñaEncriptada);
-            ps.setInt(3, dni_usuario);
-            ps.setString(4, correo);
-            ps.setString(5, nombre);
-            ps.setString(6, apellido);
-            ps.setInt(7, telefono);
-            ps.setInt(8, perf);
-            ps.executeUpdate();
-            JOptionPane.showMessageDialog(null, "REGISTRO GUARDADO...");
-            limpiarRegistroUsuario();
-            //cargartabla();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, e.toString());
-        }
-    }//GEN-LAST:event_jLabel13MouseClicked
 
     private void jcbx_perfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbx_perfilActionPerformed
 
@@ -434,10 +376,43 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         NuevoUsuarioController.Ocultar();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        NuevoUsuarioController.botonMinimizar();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        String nombre = jtxt_nombreUsuario.getText();
+        String apellido = jtxt_apellidoUsuario.getText();
+        String correo = jtxt_correoUsuario.getText();
+        String usuario = jtxt_Usuario.getText();
+        String contrasena = jtxt_contrasena.getText();
+        String contraseñaEncriptada = encriptarContraseña(contrasena);
+        int dni_usuario = Integer.parseInt(jtxt_dniUsuario.getText());
+        int telefono = Integer.parseInt(jtxt_telefonoUsuario.getText());
+        ResultSet rs;
+        int perf = 0;
+        if (jcbx_perfil.getSelectedIndex() != 0 || jcbx_perfil.getSelectedItem() != null) {
+            perf = Integer.parseInt(String.valueOf(jcbx_perfil.getSelectedItem()).trim().split(" ")[0]);
+
+        }
+        //System.out.println("esa ".);
+        try {
+            Connection con = Conexion.getConexion();
+
+            PreparedStatement ps = con.prepareStatement("INSERT INTO USUARIOS(usuario,contrasena,dni_usuario,correo,nombre,apellido,telefono, id_perfil) VALUES (?,?,?,?,?,?,?,?)");
+            ps.setString(1, usuario);
+            ps.setString(2, contraseñaEncriptada);
+            ps.setInt(3, dni_usuario);
+            ps.setString(4, correo);
+            ps.setString(5, nombre);
+            ps.setString(6, apellido);
+            ps.setInt(7, telefono);
+            ps.setInt(8, perf);
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(null, "REGISTRO GUARDADO...");
+            limpiarRegistroUsuario();
+            //cargartabla();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.toString());
+        }
+    }//GEN-LAST:event_GuardarActionPerformed
 
     private void limpiarRegistroUsuario() {
         jtxt_Usuario.setText("");
@@ -449,13 +424,13 @@ public class VentanaNuevoUsuario extends javax.swing.JFrame {
         jtxt_telefonoUsuario.setText("");
 
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Guardar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
