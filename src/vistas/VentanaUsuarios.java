@@ -9,51 +9,21 @@ import controlador.PrincipalController;
 import controlador.UsuarioController;
 import java.sql.*;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 
 public class VentanaUsuarios extends javax.swing.JFrame {
     Connection con = Conexion.getConexion();
-    
+
     
     public VentanaUsuarios() {
         initComponents();
-//        mostrarDatosUsuarios();
+
         mostrarDatosUsuarios(0,null);
     }
-//    public void mostrarDatosUsuarios(){
-//        Connection con = Conexion.getConexion();
-//        DefaultTableModel tusuario = new DefaultTableModel();
-//        tusuario.addColumn("codigo");
-//        tusuario.addColumn("usuario");
-//        tusuario.addColumn("contraseña");
-//        tusuario.addColumn("nombre");
-//        tusuario.addColumn("apellido");;
-//        tusuario.addColumn("perfil");
-////        tusuario.addColumn("permisos");
-//        jTable1.setModel(tusuario);
-//        
-//        String[] datos = new String[7];
-//        try {
-//            Statement leer= con.createStatement();
-//            ResultSet resultado = leer.executeQuery("select dni_usuario, usuario, contrasena, nombre, apellido, id_perfil from USUARIOS ");
-//            
-//            while(resultado.next()){
-//                datos[0] = resultado.getString(1);
-//                datos[1] = resultado.getString(2);
-//                datos[2] = resultado.getString(3);
-//                datos[3] = resultado.getString(4);
-//                datos[4] = resultado.getString(5);
-//                datos[5] = resultado.getString(6);
-////                datos[6] = resultado.getString(7);
-//                tusuario.addRow(datos);
-//            }
-//            jTable1.setModel(tusuario);
-//        } catch (SQLException e) {
-//            JOptionPane.showMessageDialog(null, e + "Error en la Consula");
-//            
-//        }
-//    }
+
     
    //AQUI EMPIEZA BOTON BUSCAR O FILTRAR
     public void mostrarDatosUsuarios(int opbuscar, String valor){
@@ -62,30 +32,32 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         tusuario.addColumn("codigo");
         tusuario.addColumn("usuario");
         tusuario.addColumn("contraseña");
+        tusuario.addColumn("correo");
         tusuario.addColumn("nombre");
-        tusuario.addColumn("apellido");;
+        tusuario.addColumn("apellido");
+        tusuario.addColumn("telefono");
         tusuario.addColumn("perfil");
 //        tusuario.addColumn("permisos");
         tablausuario.setModel(tusuario);
         
         String codsql;
         if(opbuscar==0 && valor == null){
-            codsql = "select dni_usuario, usuario, contrasena, nombre, apellido, id_perfil from USUARIOS ";
+            codsql = "select*from USUARIOS ";
         }else {
             if(opbuscar ==1 && valor!=null){
-                codsql = "select dni_usuario, usuario, contrasena, nombre, apellido, id_perfil from USUARIOS where dni_usuario= ' " + valor + "'";
+                codsql = "select*from USUARIOS  where dni_usuario='"+valor+"'";
                 
             }else {
                 if(opbuscar==2 && valor !=null){
-                    codsql = "select dni_usuario, usuario, contrasena, nombre, apellido, id_perfil from USUARIOS where apellido= ' " + valor + "'";
+                    codsql = "select*from USUARIOS  where apellido='"+valor+"'";
                     
                 }else {
-                    codsql = "select dni_usuario, usuario, contrasena, nombre, apellido, id_perfil from USUARIOS ";
+                    codsql = "select*from USUARIOS  ";
                 }
             }
         }
         
-        String[] datos = new String[7];
+        String[] datos = new String[8];
         try {
             Statement leer= con.createStatement();
             ResultSet resultado = leer.executeQuery(codsql);
@@ -97,7 +69,8 @@ public class VentanaUsuarios extends javax.swing.JFrame {
                 datos[3] = resultado.getString(4);
                 datos[4] = resultado.getString(5);
                 datos[5] = resultado.getString(6);
-//                datos[6] = resultado.getString(7);
+                datos[6] = resultado.getString(7);
+                datos[7] = resultado.getString(8);
                 tusuario.addRow(datos);
             }
             tablausuario.setModel(tusuario);
@@ -111,11 +84,13 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         int id=Integer.parseInt(this.tablausuario.getValueAt(fila, 0).toString());
         String usuario = tablausuario.getValueAt(fila, 1).toString();
         String contraseña = tablausuario.getValueAt(fila, 2).toString();
-        String nombre = tablausuario.getValueAt(fila, 3).toString();
-        String apellido = tablausuario.getValueAt(fila, 4).toString();
-        int perfil=Integer.parseInt(this.tablausuario.getValueAt(fila, 5).toString());
+        String correo = tablausuario.getValueAt(fila, 3).toString();
+        String nombre = tablausuario.getValueAt(fila, 4).toString();
+        String apellido = tablausuario.getValueAt(fila, 5).toString();
+        String telefono = tablausuario.getValueAt(fila, 6).toString();
+        int perfil=Integer.parseInt(tablausuario.getValueAt(fila, 7).toString());
         try {
-            PreparedStatement actua=con.prepareStatement("Update USUARIOS set dni_usuario='"+id+"', usuario='"+usuario+"', contrasena='"+contraseña+"', nombre='"+nombre+"', apellido='"+apellido+"', id_perfil='"+perfil+"' where= dni_usuario='"+id+"'");
+            PreparedStatement actua=con.prepareStatement("UPDATE USUARIOS SET usuario='"+usuario+"',contrasena='"+contraseña+"',correo='"+correo+"', nombre='"+nombre+"',apellido='"+apellido+"',telefono='"+telefono+"',id_perfil='"+perfil+"' WHERE dni_usuario='"+id+"'");
             actua.executeUpdate();
             mostrarDatosUsuarios(0,null);
             
@@ -128,9 +103,11 @@ public class VentanaUsuarios extends javax.swing.JFrame {
             int fila = tablausuario.getSelectedRow();
             String valor =tablausuario.getValueAt(fila, 0).toString();
             try {
-                PreparedStatement elim=con.prepareStatement("delete from USUARIOS where dni_usuario='"+valor+"'");
-                elim.executeUpdate();
-                mostrarDatosUsuarios(0,null);
+                    if(JOptionPane.showConfirmDialog(null, "Se eliminará el registro, ¿desea continuar?") == JOptionPane.YES_OPTION){
+                    PreparedStatement elim=con.prepareStatement("delete from USUARIOS where dni_usuario='"+valor+"'");
+                    elim.executeUpdate();
+                    mostrarDatosUsuarios(0,null);
+                }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e + "No se elimino nada");
         }
@@ -174,25 +151,6 @@ public class VentanaUsuarios extends javax.swing.JFrame {
             }
         });
 
-        tablausuario.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "codigo", "usuario", "contraseña", "nombre", "apellido", "perfil", "permisos"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
         jScrollPane1.setViewportView(tablausuario);
 
         jButton4.setText("Volver");
@@ -205,6 +163,12 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Buscar por :"));
 
         jcbxOpcion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mostrar todos", "Codigo", "Apellido", " " }));
+
+        campoBuscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                campoBuscarKeyReleased(evt);
+            }
+        });
 
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -220,21 +184,21 @@ public class VentanaUsuarios extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jcbxOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
+                .addGap(37, 37, 37)
                 .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(18, 18, 18)
                 .addComponent(btnBuscar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jcbxOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(campoBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbxOpcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscar))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -247,19 +211,16 @@ public class VentanaUsuarios extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 678, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 45, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jButton1)
-                        .addGap(76, 76, 76)
-                        .addComponent(jbtnactualizar)
-                        .addGap(62, 62, 62)
+                        .addGap(113, 113, 113)
                         .addComponent(jButton2)
+                        .addGap(123, 123, 123)
+                        .addComponent(jbtnactualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton4)))
                 .addContainerGap())
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -272,8 +233,8 @@ public class VentanaUsuarios extends javax.swing.JFrame {
                     .addComponent(jButton4))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -309,6 +270,13 @@ public class VentanaUsuarios extends javax.swing.JFrame {
         // TODO add your handling code here:
         eliminarusuario();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void campoBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_campoBuscarKeyReleased
+//        TableRowSorter<DefaultTableModel> Sorter;
+//        Sorter = new TableRowSorter<>(tusuario);
+//        tablausuario.setRowSorter(Sorter);
+//        Sorter.setRowFilter(RowFilter.regexFilter(campoBuscar.getText(),jcbxOpcion.getSelectedIndex()));
+    }//GEN-LAST:event_campoBuscarKeyReleased
 
     /**
      * @param args the command line arguments
